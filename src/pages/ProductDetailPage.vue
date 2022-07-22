@@ -3,7 +3,7 @@
 <h1>{{ product.name }}</h1>
 <h3>{{ product.price }}</h3>
 <p>{{ product.description }}</p>
-<button>Add to cart</button>
+<button @click="addToCart">Add to cart</button>
 
 </div>
 <div v-if="!productFound">
@@ -12,17 +12,23 @@
 </template>
 
 <script>
-import products from './products';
 
 export default {
     name: 'ProductDetailPage',
+    props: ['products'],
     computed: {
         product(){
-            return products.find(prod => prod.id === this.$route.params.id);
+            return this.products.find(prod => prod.id === this.$route.params.id);
         },
         productFound(){
             return !!this.product;
         }
+    },
+    emits: ['addToCart'],
+    methods: {
+        addToCart(){
+            this.$emit('addToCart', this.$route.params.id);
+        },
     }
 };
 </script>
